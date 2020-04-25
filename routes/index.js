@@ -1,16 +1,28 @@
-const express                     = require('express');
-const mongoose                    = require('mongoose');
+const express  = require('express');
+const router   = express.Router();
+const mongoose = require('mongoose');
+const path     = require('path');
+const auth     = require('http-auth'); // version 4 doesn't work
+
 const { check, validationResult } = require('express-validator');
-const router                      = express.Router();
+
+// Database stuff
 require('../models/Registration');
-const Registration                = mongoose.model('Registration');
+const Registration = mongoose.model('Registration');
+
+// Authentication
+const basic = auth.basic({
+    file: path.join(__dirname, '../users.htpasswd'),
+});
 
 // req = object full of info coming in
 // res = object full of methods for sending data back to user
+// Homepage Title
 router.get('/', (req, res) => {
     res.render('form', { title: 'Corona Book Club Login' });
   });
-  
+
+// Registration Form
 router.post('/',
 [
     // Validate user input: make sure it is filled
@@ -47,7 +59,7 @@ router.post('/',
 });
 
 // list registrations
-router.get('/registrations', (req, res) => {
+router.get('/registrations', auth.connect(basic), (req, res) => {
     Registration.find()
         .then((registrations) => {
             res.render('index', { title: 'Listing registrations', registrations });
