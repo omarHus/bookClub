@@ -1,70 +1,7 @@
-const express  = require('express');
-const router   = express.Router();
-const mongoose = require('mongoose');
-const path     = require('path');
-const auth     = require('http-auth'); // version 4 doesn't work
+const express = require('express');
+const router  = express.Router();
 
-const { check, validationResult } = require('express-validator');
-
-// Database stuff
-require('../models/Registration');
-const Registration = mongoose.model('Registration');
-
-// Authentication
-const basic = auth.basic({
-    file: path.join(__dirname, '../users.htpasswd'),
-});
-
-// req = object full of info coming in
-// res = object full of methods for sending data back to user
-// Homepage Title
-router.get('/', (req, res) => {
-    res.render('form', { title: 'Corona Book Club Login' });
-  });
-
-// Registration Form
-router.post('/',
-[
-    // Validate user input: make sure it is filled
-    // But there are other validators you can use
-    check('name')
-        .isLength({ min: 1 })
-        .withMessage('Please enter a name'),
-    check('email')
-        .isLength({ min: 1 })
-        .withMessage('Please enter an email'),
-],
-(req, res) => {
-    // See if validation failed or not
-    const errors = validationResult(req);
-
-    if (errors.isEmpty()) {
-        const registration = new Registration(req.body);
-        registration.save()
-            .then(() => { res.send('Thank you for your registration!'); })
-            .catch((err) => {
-                console.log(err);
-                res.send('Sorry! Something went wrong.');
-            });
-        res.send('Thank you for your registration!');
-    } else {
-        res.render('form', {
-            title : 'Registration form',
-            errors: errors.array(),
-            data  : req.body,
-        });
-    }
-    console.log(req.body);
-    res.render('form', { title: 'Registration form' });
-});
-
-// list registrations
-router.get('/registrations', auth.connect(basic), (req, res) => {
-    Registration.find()
-        .then((registrations) => {
-            res.render('index', { title: 'Listing registrations', registrations });
-        })
-        .catch(() => { res.send('Sorry! Something went wrong'); });
-});
+// Homepage - welcome.js
+router.get('/', (req, res) => res.render('welcome'));
 
 module.exports = router;
