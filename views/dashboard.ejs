@@ -4,13 +4,12 @@
     <div class="col-md-6 m-auto">
       <div class="card card-body">
         <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>New Post</h1>
-        <%- include ('./partials/messages') %>
-        <form action="/dashboard" method="POST">
+        <form action="/posts/newPost" method="POST">
             <div class="form-group">
                 <input
                     type="hidden"
-                    id="user"
-                    name="user"
+                    id="name"
+                    name="name"
                     class="form-control"
                     placeholder="User name"
                     value="<%= name %>"
@@ -68,4 +67,5 @@
       }
     }
 </script>
+<%- include ('./partials/messages') %>
 <a href="/users/logout" class="btn btn-secondary">Logout</a>

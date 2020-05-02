@@ -5,9 +5,9 @@ const router   = express.Router();
 const Post = require('../models/Post');
 
 // New Post Handle
-router.post('/dashboard',(req, res) => {
-    const { user, title, author, review } = req.body;
-    console.log(user);
+router.post('/newPost',(req, res) => {
+    const { name, title, author, review } = req.body;
+    console.log(name);
     let errors = [];
 
     // check required fields
@@ -19,7 +19,7 @@ router.post('/dashboard',(req, res) => {
     if(errors.length > 0) {
         res.render('dashboard', {
            errors,
-           user,
+           name,
            title,
            author,
            review 
@@ -33,25 +33,25 @@ router.post('/dashboard',(req, res) => {
                     errors.push({ msg: 'This book has already been reviewed' });
                     res.render('dashboard', {
                         errors,
-                        user,
+                        name,
                         title,
                         author,
                         review 
                     });
                 } else {
                     const newPost = new Post({
-                        user,
+                        name,
                         title,
                         author,
                         review 
                     });
 
-                    // save user
+                    // save post
                     newPost.save()
                         .then(post => {
                             req.flash('success_msg', 'Your review has been posted!');
                             console.log('you posted a new review');
-                            res.redirect('/dashboard');
+                            res.redirect('/posts/dashboard');
                         })
                         .catch(err => console.log(err));
                    
@@ -60,6 +60,12 @@ router.post('/dashboard',(req, res) => {
             });
     }
 });
+
+// // Dashboard
+// router.get('/dashboard/newPost' ,(req, res) => 
+//     res.render('dashboard', {
+//         name: req.user.name
+// }));
 
 
 module.exports = router;
