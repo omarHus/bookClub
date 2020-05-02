@@ -1,18 +1,18 @@
 const express  = require('express');
 const router   = express.Router();
-const bcrypt   = require('bcryptjs');
-const passport = require('passport');
+const { ensureAuthenticated } = require('../config/auth');
 
 // User model
 const Post = require('../models/Post');
 
 // New Post Handle
-router.post('/dashboard', (req, res) => {
+router.post('/dashboard', ensureAuthenticated, (req, res, next) => {
     const { user, title, author, review } = req.body;
+    console.log(user);
     let errors = [];
 
     // check required fields
-    if(!user|| !title || !author|| !review) {
+    if(!title || !author|| !review) {
         errors.push({ msg: 'Please fill in all fields' });
     }
 
@@ -51,6 +51,7 @@ router.post('/dashboard', (req, res) => {
                     newPost.save()
                         .then(post => {
                             req.flash('success_msg', 'Your review has been posted!');
+                            console.log('you posted a new review');
                             res.redirect('/dashboard');
                         })
                         .catch(err => console.log(err));
@@ -58,7 +59,7 @@ router.post('/dashboard', (req, res) => {
 
                 }
             });
-    }
+    } (req, res, next);
 });
 
 
