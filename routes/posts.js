@@ -1,12 +1,11 @@
 const express  = require('express');
 const router   = express.Router();
-const { ensureAuthenticated } = require('../config/auth');
 
 // User model
 const Post = require('../models/Post');
 
 // New Post Handle
-router.post('/dashboard', ensureAuthenticated, (req, res, next) => {
+router.post('/dashboard',(req, res) => {
     const { user, title, author, review } = req.body;
     console.log(user);
     let errors = [];
@@ -59,7 +58,7 @@ router.post('/dashboard', ensureAuthenticated, (req, res, next) => {
 
                 }
             });
-    } (req, res, next);
+    }
 });
 
 

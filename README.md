@@ -2,8 +2,5 @@
 
 ## Setup
 
-- brew install node
-- npm init -y
-- mongod (in another shell terminal)
-- to run: npm run watch
-- listen on http://localhost:3000
+- to run use this script: npm run dev
+- listen on http://localhost:5000
