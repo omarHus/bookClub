@@ -51,7 +51,7 @@ router.post('/newPost',(req, res) => {
                         .then(post => {
                             req.flash('success_msg', 'Your review has been posted!');
                             console.log('you posted a new review');
-                            res.redirect('/posts/dashboard');
+                            res.redirect('/dashboard');
                         })
                         .catch(err => console.log(err));
                    

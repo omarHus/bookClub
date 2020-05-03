@@ -1,5 +1,14 @@
 <h1 class="mt-4">The COVID Book Club</h1>
 <p class="lead mb-3">Welcome <%= name %></p>
+<div class="row mt-5" id="posts">
+    <% posts.forEach(function(post) { %>
+        <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>
+            Title: <%= post.title %>
+            Author: <%= post.author %>
+            Posted by: <%= post.name %>
+        </h1>
+    <% }); %>
+</div>
 <div class="row mt-5" id="newPost" display="none">
     <div class="col-md-6 m-auto">
       <div class="card card-body">
@@ -51,7 +60,7 @@
     </div>
 </div>
 
-<button onclick="myFunction()" class="btn btn-primary btn-block" id="newPostBtn" >New Post</button>
+<button onclick="myFunction()" class="btn btn-primary" id="newPostBtn" >New Post</button>
 
   <script>
     var x = document.getElementById("newPost").style.display = "none";
